@@ -3,3 +3,196 @@ info:
   title: Twinte API
   description: Twinte API Gateway
   version: 2.0.0
+servers:
+  - url: http://localhost:3000/v2
+    description: localhost
+  - url: https://api.dev.twinte.net/v2
+    description: dev server
+  - url: https://api.twinte.net/v2
+    description: production server
+components:
+  schemas:
+    CourceMethods:
+      type: array
+      items:
+        type: string
+        enum:
+          - 対面
+          - オンライン
+          - オンデマンド
+          - 不明
+    
+    CourceModule:
+      type: string
+      enum:
+        - 春A
+        - 春B
+        - 春C
+        - 夏季休業中
+        - 秋A
+        - 秋B
+        - 秋C
+        - 春季休業中
+        - 通年
+        - 不明
+
+    CourceSchedule:
+      type: object
+      properties:
+        module:
+          $ref: "#/components/schemas/CourceModule"
+        day:
+          $ref: "#/components/schemas/Day"
+        period:
+          type: integer
+        room:
+          type: string
+
+    Day:
+      type: string
+      enum:
+        - 日
+        - 月
+        - 火
+        - 水
+        - 木
+        - 金
+        - 土
+
+    SchoolCalendarEvent:
+      type: object
+      required:
+        - date
+        - eventType
+        - description
+      properties:
+        date:
+          type: string
+          format: date
+        eventType:
+          type: "string"
+          enum:
+            - 祝日
+            - 休日
+            - 試験
+            - 振替
+        description:
+          type: string
+        changeTo:
+          $ref: "#/components/schemas/Day"
+
+    SchoolCalendarModule:
+      type: object
+      required:
+        - year
+        - module
+        - start
+        - end
+      properties:
+        year:
+          type: integer
+          description: 年度
+        module:
+          type: string
+          enum:
+            - 春A
+            - 春B
+            - 春C
+            - 夏季休業中
+            - 秋A
+            - 秋B
+            - 秋C
+            - 春季休業中
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+
+    Cource:
+      type: object
+      required:
+        - courceID
+        - year
+        - code
+        - name
+        - instructor
+        - credit
+        - overview
+        - remarks
+        - recommendedGrades
+        - methods
+        - schedules
+      properties:
+        courceID:
+          type: string
+          format: uuid
+        year:
+          type: integer
+        code:
+          type: string
+        name:
+          type: string
+        instructor:
+          type: string
+        credit:
+          type: number
+        overview:
+          type: string
+        remarks:
+          type: string
+        recommendedGrades:
+          type: array
+          items:
+            type: integer
+        methods:
+          $ref: "#/components/schemas/CourceMethods"
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourceSchedule"
+    
+    RegisteredCource:
+      type: object
+      required:
+        - registeredCourceID
+        - userID
+        - year
+
+      properties:
+        registeredCourceID:
+          type: string
+          format: uuid
+        userID:
+          type: string
+          format: uuid
+        year:
+          type: integer
+        cource:
+          $ref: "#/components/schemas/Cource"
+        name:
+          type: string
+        instructor:
+          type: string
+        credit:
+          type: number
+        methods:
+          $ref: "#/components/schemas/CourceMethods"
+        schedules:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourceSchedule"
+    
+    Tag:
+      type: object
+      properties:
+        tagID:
+          type: string
+          format: uuid
+        userID:
+          type: string
+          format: uuid
+        name:
+          type: string
+
