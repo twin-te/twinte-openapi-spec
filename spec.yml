@@ -58,7 +58,7 @@ paths:
         400:
           description: 失敗
 
-  /cources/search:
+  /courses/search:
     post:
       summary: 講義を検索する
       tags:
@@ -71,9 +71,9 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/Cource"
+                  $ref: "#/components/schemas/Course"
 
-  /cources/{year}/{code}:
+  /courses/{year}/{code}:
     get:
       summary: 指定した講義を取得する
       tags:
@@ -84,9 +84,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Cource"
+                $ref: "#/components/schemas/Course"
 
-  /registered-cources:
+  /registered-courses:
     get:
       summary: 登録済みの講義を返す
       tags:
@@ -105,7 +105,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/RegisteredCource"
+                  $ref: "#/components/schemas/RegisteredCourse"
 
     post:
       summary: 講義を登録する
@@ -122,16 +122,16 @@ paths:
                       type: integer
                     code:
                       type: string
-                - $ref: "#/components/schemas/RegisteredCourceWithoutID"
+                - $ref: "#/components/schemas/RegisteredCourseWithoutID"
       responses:
         200:
           description: 成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisteredCource"
+                $ref: "#/components/schemas/RegisteredCourse"
 
-  /registered-cources/{id}:
+  /registered-courses/{id}:
     get:
       summary: 指定した登録された講義を取得する
       tags:
@@ -149,7 +149,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisteredCource"
+                $ref: "#/components/schemas/RegisteredCourse"
 
     put:
       summary: 指定した登録された講義を更新する
@@ -166,14 +166,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisteredCourceWithoutID"
+              $ref: "#/components/schemas/RegisteredCourseWithoutID"
       responses:
         200:
           description: 成功
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisteredCource"
+                $ref: "#/components/schemas/RegisteredCourse"
 
     delete:
       summary: 指定した登録された講義を削除する
@@ -288,7 +288,7 @@ tags:
 
 components:
   schemas:
-    CourceMethods:
+    CourseMethods:
       type: array
       items:
         type: string
@@ -298,7 +298,7 @@ components:
           - オンデマンド
           - 不明
 
-    CourceModule:
+    CourseModule:
       type: string
       enum:
         - 春A
@@ -312,7 +312,7 @@ components:
         - 通年
         - 不明
 
-    CourceSchedule:
+    CourseSchedule:
       type: object
       required:
         - module
@@ -321,7 +321,7 @@ components:
         - room
       properties:
         module:
-          $ref: "#/components/schemas/CourceModule"
+          $ref: "#/components/schemas/CourseModule"
         day:
           $ref: "#/components/schemas/Day"
         period:
@@ -391,10 +391,10 @@ components:
           type: string
           format: date
 
-    Cource:
+    Course:
       type: object
       required:
-        - courceID
+        - courseID
         - year
         - code
         - name
@@ -406,7 +406,7 @@ components:
         - methods
         - schedules
       properties:
-        courceID:
+        courseID:
           type: string
           format: uuid
         year:
@@ -428,30 +428,30 @@ components:
           items:
             type: integer
         methods:
-          $ref: "#/components/schemas/CourceMethods"
+          $ref: "#/components/schemas/CourseMethods"
         schedules:
           type: array
           items:
-            $ref: "#/components/schemas/CourceSchedule"
+            $ref: "#/components/schemas/CourseSchedule"
 
-    RegisteredCource:
+    RegisteredCourse:
       allOf:
         - type: object
           required:
-            - registeredCourceID
+            - registeredCourseID
             - userID
           properties:
-            registeredCourceID:
+            registeredCourseID:
               type: string
               format: uuid
             userID:
               type: string
               format: uuid
-            cource:
-              $ref: "#/components/schemas/Cource"
-        - $ref: "#/components/schemas/RegisteredCourceWithoutID"
+            course:
+              $ref: "#/components/schemas/Course"
+        - $ref: "#/components/schemas/RegisteredCourseWithoutID"
 
-    RegisteredCourceWithoutID:
+    RegisteredCourseWithoutID:
       type: object
       properties:
         year:
@@ -463,11 +463,11 @@ components:
         credit:
           type: number
         methods:
-          $ref: "#/components/schemas/CourceMethods"
+          $ref: "#/components/schemas/CourseMethods"
         schedules:
           type: array
           items:
-            $ref: "#/components/schemas/CourceSchedule"
+            $ref: "#/components/schemas/CourseSchedule"
         memo:
           type: string
         attendance:
