@@ -11,12 +11,11 @@ servers:
   - url: https://api.twinte.net/v2
     description: production server
 
-
 paths:
   /school-calendar/events:
     get:
       summary: 学年暦のイベントを取得する
-      tags: 
+      tags:
         - 学年暦
       parameters:
         - name: year
@@ -35,11 +34,11 @@ paths:
                   $ref: "#/components/schemas/SchoolCalendarEvent"
         400:
           description: 失敗
-  
+
   /school-calendar/modules:
     get:
       summary: 学年暦のモジュール期間を取得する
-      tags: 
+      tags:
         - 学年暦
       parameters:
         - name: year
@@ -73,7 +72,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Cource"
-  
+
   /cources/{year}/{code}:
     get:
       summary: 指定した講義を取得する
@@ -107,7 +106,7 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/RegisteredCource"
-    
+
     post:
       summary: 講義を登録する
       tags:
@@ -130,8 +129,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisteredCource" 
-  
+                $ref: "#/components/schemas/RegisteredCource"
+
   /registered-cources/{id}:
     get:
       summary: 指定した登録された講義を取得する
@@ -151,7 +150,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RegisteredCource"
-    
+
     put:
       summary: 指定した登録された講義を更新する
       tags:
@@ -175,7 +174,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RegisteredCource"
-    
+
     delete:
       summary: 指定した登録された講義を削除する
       tags:
@@ -190,11 +189,11 @@ paths:
       responses:
         204:
           description: 成功
-      
+
   /tags:
     get:
       summary: 全てのタグを取得する
-      tags: 
+      tags:
         - タグ
       responses:
         200:
@@ -203,7 +202,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-    
+
     post:
       summary: タグを作成する
       tags:
@@ -223,11 +222,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-  
+
   /tags/{id}:
     put:
       summary: タグを更新する
-      tags: 
+      tags:
         - タグ
       parameters:
         - in: path
@@ -251,7 +250,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-    
+
     delete:
       summary: タグを削除する
       tags:
@@ -278,8 +277,7 @@ paths:
           content:
             application/json:
               schema:
-               $ref: "#/components/schemas/User"
-
+                $ref: "#/components/schemas/User"
 
 tags:
   - name: 学年暦
@@ -287,7 +285,6 @@ tags:
   - name: 登録された講義
   - name: タグ
   - name: ユーザー
-
 
 components:
   schemas:
@@ -300,7 +297,7 @@ components:
           - オンライン
           - オンデマンド
           - 不明
-    
+
     CourceModule:
       type: string
       enum:
@@ -436,7 +433,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CourceSchedule"
-    
+
     RegisteredCource:
       allOf:
         - type: object
@@ -453,7 +450,7 @@ components:
             cource:
               $ref: "#/components/schemas/Cource"
         - $ref: "#/components/schemas/RegisteredCourceWithoutID"
-    
+
     RegisteredCourceWithoutID:
       type: object
       properties:
@@ -477,7 +474,7 @@ components:
           type: integer
         absence:
           type: integer
-        late: 
+        late:
           type: integer
 
     Tag:
@@ -495,7 +492,7 @@ components:
           format: uuid
         name:
           type: string
-    
+
     User:
       type: object
       required:
