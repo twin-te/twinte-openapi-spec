@@ -10,6 +10,285 @@ servers:
     description: dev server
   - url: https://api.twinte.net/v2
     description: production server
+
+
+paths:
+  /school-calendar/events:
+    get:
+      summary: 学年暦のイベントを取得する
+      tags: 
+        - 学年暦
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SchoolCalendarEvent"
+        400:
+          description: 失敗
+  
+  /school-calendar/modules:
+    get:
+      summary: 学年暦のモジュール期間を取得する
+      tags: 
+        - 学年暦
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SchoolCalendarModule"
+        400:
+          description: 失敗
+
+  /cources/search:
+    post:
+      summary: 講義を検索する
+      tags:
+        - 講義
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Cource"
+  
+  /cources/{year}/{code}:
+    get:
+      summary: 指定した講義を取得する
+      tags:
+        - 講義
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Cource"
+
+  /registered-cources:
+    get:
+      summary: 登録済みの講義を返す
+      tags:
+        - 登録された講義
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RegisteredCource"
+    
+    post:
+      summary: 講義を登録する
+      tags:
+        - 登録された講義
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    year:
+                      type: integer
+                    code:
+                      type: string
+                - $ref: "#/components/schemas/RegisteredCourceWithoutID"
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisteredCource" 
+  
+  /registered-cources/{id}:
+    get:
+      summary: 指定した登録された講義を取得する
+      tags:
+        - 登録された講義
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisteredCource"
+    
+    put:
+      summary: 指定した登録された講義を更新する
+      tags:
+        - 登録された講義
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisteredCourceWithoutID"
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RegisteredCource"
+    
+    delete:
+      summary: 指定した登録された講義を削除する
+      tags:
+        - 登録された講義
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: 成功
+      
+  /tags:
+    get:
+      summary: 全てのタグを取得する
+      tags: 
+        - タグ
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+    
+    post:
+      summary: タグを作成する
+      tags:
+        - タグ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+  
+  /tags/{id}:
+    put:
+      summary: タグを更新する
+      tags: 
+        - タグ
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+    
+    delete:
+      summary: タグを削除する
+      tags:
+        - タグ
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        204:
+          description: 成功
+
+  /users/me:
+    get:
+      summary: ログイン中のユーザーを取得する
+      tags:
+        - ユーザー
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+               $ref: "#/components/schemas/User"
+
+
+tags:
+  - name: 学年暦
+  - name: 講義
+  - name: 登録された講義
+  - name: タグ
+  - name: ユーザー
+
+
 components:
   schemas:
     CourceMethods:
@@ -38,6 +317,11 @@ components:
 
     CourceSchedule:
       type: object
+      required:
+        - module
+        - day
+        - period
+        - room
       properties:
         module:
           $ref: "#/components/schemas/CourceModule"
@@ -154,23 +438,27 @@ components:
             $ref: "#/components/schemas/CourceSchedule"
     
     RegisteredCource:
+      allOf:
+        - type: object
+          required:
+            - registeredCourceID
+            - userID
+          properties:
+            registeredCourceID:
+              type: string
+              format: uuid
+            userID:
+              type: string
+              format: uuid
+            cource:
+              $ref: "#/components/schemas/Cource"
+        - $ref: "#/components/schemas/RegisteredCourceWithoutID"
+    
+    RegisteredCourceWithoutID:
       type: object
-      required:
-        - registeredCourceID
-        - userID
-        - year
-
       properties:
-        registeredCourceID:
-          type: string
-          format: uuid
-        userID:
-          type: string
-          format: uuid
         year:
           type: integer
-        cource:
-          $ref: "#/components/schemas/Cource"
         name:
           type: string
         instructor:
@@ -183,9 +471,21 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CourceSchedule"
-    
+        memo:
+          type: string
+        attendance:
+          type: integer
+        absence:
+          type: integer
+        late: 
+          type: integer
+
     Tag:
       type: object
+      required:
+        - tagID
+        - userID
+        - name
       properties:
         tagID:
           type: string
@@ -195,4 +495,15 @@ components:
           format: uuid
         name:
           type: string
-
+    
+    User:
+      type: object
+      required:
+        - userID
+        - name
+      properties:
+        userID:
+          type: string
+          format: uuid
+        name:
+          type: string
