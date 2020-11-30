@@ -479,6 +479,10 @@ components:
           type: integer
         late: 
           type: integer
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
 
     Tag:
       type: object
