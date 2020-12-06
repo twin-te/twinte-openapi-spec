@@ -296,24 +296,24 @@ components:
       items:
         type: string
         enum:
-          - 対面
-          - オンライン
-          - オンデマンド
-          - 不明
+          - FaceToFace
+          - Synchronous
+          - Asynchronous
+          - Others
     
     CourseModule:
       type: string
       enum:
-        - 春A
-        - 春B
-        - 春C
-        - 夏季休業中
-        - 秋A
-        - 秋B
-        - 秋C
-        - 春季休業中
-        - 通年
-        - 不明
+        - SpringA
+        - SpringB
+        - SpringC
+        - SummerVacation
+        - FallA
+        - FallB
+        - FallC
+        - SpringVacation
+        - Annual
+        - Unknown
 
     CourseSchedule:
       type: object
@@ -335,13 +335,13 @@ components:
     Day:
       type: string
       enum:
-        - 日
-        - 月
-        - 火
-        - 水
-        - 木
-        - 金
-        - 土
+        - Sun
+        - Mon
+        - Tue
+        - Wed
+        - Thu
+        - Fri
+        - Sat
 
     SchoolCalendarEvent:
       type: object
@@ -356,10 +356,10 @@ components:
         eventType:
           type: "string"
           enum:
-            - 祝日
-            - 休日
-            - 試験
-            - 振替
+            - PublicHoliday
+            - Holiday
+            - Exam
+            - SubstituteDay
         description:
           type: string
         changeTo:
@@ -379,14 +379,14 @@ components:
         module:
           type: string
           enum:
-            - 春A
-            - 春B
-            - 春C
-            - 夏季休業中
-            - 秋A
-            - 秋B
-            - 秋C
-            - 春季休業中
+            - SpringA
+            - SpringB
+            - SpringC
+            - SummerVacation
+            - FallA
+            - FallB
+            - FallC
+            - SpringVacation
         start:
           type: string
           format: date
