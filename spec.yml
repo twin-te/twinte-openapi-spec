@@ -202,7 +202,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Tag"
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
     
     post:
       summary: タグを作成する
@@ -342,6 +344,8 @@ components:
         - Thu
         - Fri
         - Sat
+        - Intensive
+        - Unknown
 
     SchoolCalendarEvent:
       type: object
@@ -397,7 +401,7 @@ components:
     Course:
       type: object
       required:
-        - courseID
+        - id
         - year
         - code
         - name
@@ -409,7 +413,7 @@ components:
         - methods
         - schedules
       properties:
-        courseID:
+        id:
           type: string
           format: uuid
         year:
@@ -441,10 +445,10 @@ components:
       allOf:
         - type: object
           required:
-            - registeredCourseID
+            - id
             - userID
           properties:
-            registeredCourseID:
+            id:
               type: string
               format: uuid
             userID:
@@ -482,16 +486,16 @@ components:
         tags:
           type: array
           items:
-            $ref: "#/components/schemas/Tag"
+            $ref: "#/components/schemas/TagIdOnly"
 
     Tag:
       type: object
       required:
-        - tagID
+        - id
         - userID
         - name
       properties:
-        tagID:
+        id:
           type: string
           format: uuid
         userID:
@@ -499,14 +503,23 @@ components:
           format: uuid
         name:
           type: string
+
+    TagIdOnly:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          format: uuid
     
     User:
       type: object
       required:
-        - userID
+        - id
         - name
       properties:
-        userID:
+        id:
           type: string
           format: uuid
         name:
