@@ -79,6 +79,17 @@ paths:
       summary: 指定した講義を取得する
       tags:
         - 講義
+      parameters:
+        - name: year
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: 成功
