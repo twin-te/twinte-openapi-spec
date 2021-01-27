@@ -4,11 +4,13 @@ info:
   description: Twinte API Gateway
   version: 2.0.0
 servers:
-  - url: http://localhost:3000/v2
+  - url: http://localhost:3000/
     description: localhost
-  - url: https://api.dev.twinte.net/v2
+  - url: http://localhost:3000/api/v3
+    description: localhost
+  - url: https://dev.app.twinte.net/api/v3
     description: dev server
-  - url: https://api.twinte.net/v2
+  - url: https://app.twinte.net/api/v3
     description: production server
 
 
