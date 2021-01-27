@@ -12,6 +12,9 @@ servers:
     description: dev server
   - url: https://app.twinte.net/api/v3
     description: production server
+security:
+  - cookieAuth: []
+
 
 
 paths:
@@ -36,7 +39,11 @@ paths:
                 items:
                   $ref: "#/components/schemas/SchoolCalendarEvent"
         400:
-          description: 失敗
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   
   /school-calendar/modules:
     get:
@@ -59,7 +66,11 @@ paths:
                 items:
                   $ref: "#/components/schemas/SchoolCalendarModule"
         400:
-          description: 失敗
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /courses/search:
     post:
@@ -75,7 +86,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Course"
-  
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /courses/{year}/{code}:
     get:
       summary: 指定した講義を取得する
@@ -99,6 +116,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Course"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /registered-courses:
     get:
@@ -120,7 +145,13 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/RegisteredCourse"
-    
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
     post:
       summary: 講義を登録する
       tags:
@@ -144,6 +175,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RegisteredCourse" 
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   
   /registered-courses/{id}:
     get:
@@ -164,6 +201,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RegisteredCourse"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
     
     put:
       summary: 指定した登録された講義を更新する
@@ -188,7 +233,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RegisteredCourse"
-    
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
     delete:
       summary: 指定した登録された講義を削除する
       tags:
@@ -203,7 +256,15 @@ paths:
       responses:
         204:
           description: 成功
-      
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
   /tags:
     get:
       summary: 全てのタグを取得する
@@ -218,7 +279,11 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/Tag"
-    
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
     post:
       summary: タグを作成する
       tags:
@@ -238,6 +303,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   
   /tags/{id}:
     put:
@@ -266,7 +337,15 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
-    
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
     delete:
       summary: タグを削除する
       tags:
@@ -281,6 +360,14 @@ paths:
       responses:
         204:
           description: 成功
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /users/me:
     get:
@@ -294,7 +381,10 @@ paths:
             application/json:
               schema:
                $ref: "#/components/schemas/User"
-
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
 tags:
   - name: 学年暦
@@ -302,7 +392,6 @@ tags:
   - name: 登録された講義
   - name: タグ
   - name: ユーザー
-
 
 components:
   schemas:
@@ -537,3 +626,47 @@ components:
           format: uuid
         name:
           type: string
+    
+    Error:
+      type: object
+      required:
+        - message
+        - errors
+      properties:
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+
+  responses:
+    BadRequestError:
+      description: リクエストに問題があった
+      content:
+        application/json:
+          schema:
+            $ref:  "#/components/schemas/Error"
+    UnauthorizedError:
+      description: 未認証
+      content:
+        application/json:
+          schema:
+            $ref:  "#/components/schemas/Error"
+    NotFoundError:
+      description: 指定されたデータが見つからなかった
+      content:
+        application/json:
+          schema:
+            $ref:  "#/components/schemas/Error"
+    InternalServerError:
+      description: サーバー側で問題が発生した
+      content:
+        application/json:
+          schema:
+            $ref:  "#/components/schemas/Error"
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: connect.sid
