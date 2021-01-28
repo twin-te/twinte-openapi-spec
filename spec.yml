@@ -395,15 +395,13 @@ tags:
 
 components:
   schemas:
-    CourseMethods:
-      type: array
-      items:
-        type: string
-        enum:
-          - FaceToFace
-          - Synchronous
-          - Asynchronous
-          - Others
+    CourseMethod:
+      type: string
+      enum:
+        - FaceToFace
+        - Synchronous
+        - Asynchronous
+        - Others
     
     CourseModule:
       type: string
@@ -447,6 +445,8 @@ components:
         - Fri
         - Sat
         - Intensive
+        - Appointment
+        - AnyTime
         - Unknown
 
     SchoolCalendarEvent:
@@ -537,7 +537,9 @@ components:
           items:
             type: integer
         methods:
-          $ref: "#/components/schemas/CourseMethods"
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseMethod"
         schedules:
           type: array
           items:
@@ -572,7 +574,9 @@ components:
         credit:
           type: number
         methods:
-          $ref: "#/components/schemas/CourseMethods"
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseMethod"
         schedules:
           type: array
           items:
