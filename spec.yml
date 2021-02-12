@@ -162,6 +162,9 @@ paths:
             schema:
               oneOf:
                 - type: object
+                  required:
+                    - year
+                    - code
                   properties:
                     year:
                       type: integer
@@ -564,6 +567,8 @@ components:
     
     RegisteredCourseWithoutID:
       type: object
+      required:
+        - year
       properties:
         year:
           type: integer
