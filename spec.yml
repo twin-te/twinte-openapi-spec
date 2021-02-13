@@ -170,7 +170,36 @@ paths:
                       type: integer
                     code:
                       type: string
-                - $ref: "#/components/schemas/RegisteredCourseWithoutID"
+                - type: object
+                  required:
+                    - year
+                    - name
+                    - instructor
+                    - credit
+                    - methods
+                    - schedules
+                    - tags
+                  properties:
+                    year:
+                      type: integer
+                    name:
+                      type: string
+                    instructor:
+                      type: string
+                    credit:
+                      type: number
+                    methods:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/CourseMethod"
+                    schedules:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/CourseSchedule"
+                    tags:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/TagIdOnly"
       responses:
         200:
           description: 成功
