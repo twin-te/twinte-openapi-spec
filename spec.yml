@@ -569,6 +569,11 @@ components:
       type: object
       required:
         - year
+        - memo
+        - attendance
+        - absence
+        - late
+        - tags
       properties:
         year:
           type: integer
