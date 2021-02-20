@@ -586,12 +586,12 @@ components:
         - type: object
           required:
             - id
-            - userID
+            - userId
           properties:
             id:
               type: string
               format: uuid
-            userID:
+            userId:
               type: string
               format: uuid
             course:
@@ -641,13 +641,13 @@ components:
       type: object
       required:
         - id
-        - userID
+        - userId
         - name
       properties:
         id:
           type: string
           format: uuid
-        userID:
+        userId:
           type: string
           format: uuid
         name:
