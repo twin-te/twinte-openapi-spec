@@ -442,7 +442,6 @@ paths:
               schema:
                 type: object
                 required:
-                  - module
                   - events
                   - courses
                 properties:
