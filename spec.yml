@@ -416,17 +416,60 @@ paths:
           content:
             application/json:
               schema:
-               $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/User"
         401:
           $ref: '#/components/responses/UnauthorizedError'
         500:
           $ref: '#/components/responses/InternalServerError'
+
+  /timetable/{date}:
+    get:
+      summary: 指定された日付の日程＆時間割情報を取得する
+      tags: 
+        - ウィジット用
+      parameters:
+        - in: path
+          name: date
+          required: true
+          schema:
+            type: string
+            format: date
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - module
+                  - events
+                  - courses
+                properties:
+                  module: 
+                    $ref: '#/components/schemas/CourseModule'
+                  events:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SchoolCalendarEvent'
+                  courses:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/RegisteredCourse"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
 
 tags:
   - name: 学年暦
   - name: 講義
   - name: 登録された講義
   - name: タグ
+  - name: ウィジット用
   - name: ユーザー
 
 components:
