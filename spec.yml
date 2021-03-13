@@ -447,7 +447,7 @@ paths:
                   - courses
                 properties:
                   module: 
-                    $ref: '#/components/schemas/CourseModule'
+                    $ref: '#/components/schemas/SchoolCalendarModule'
                   events:
                     type: array
                     items:
