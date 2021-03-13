@@ -544,6 +544,7 @@ components:
             - Holiday
             - Exam
             - SubstituteDay
+            - Other
         description:
           type: string
         changeTo:
