@@ -77,6 +77,36 @@ paths:
       summary: 講義を検索する
       tags:
         - 講義
+      requestBody:
+        description: 検索クエリ
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - year
+                - keywords
+              properties:
+                year:
+                  type: integer
+                searchMode:
+                  description: > 
+                    検索モード
+                    Cover 指定した時限と講義の開講日時が一部でも被っていれば対象とみなす
+                    Contain 指定した時限に収まっている講義のみ対象とみなす
+                    デフォルトはCover
+                  type: string
+                  enum:
+                    - Cover
+                    - Contain
+                keywords:
+                  type: array
+                  items:
+                    type: string
+                timetable:
+                  $ref: "#/components/schemas/SearchCourseTimetableQuery"
+
       responses:
         200:
           description: 成功
@@ -641,6 +671,76 @@ components:
               $ref: "#/components/schemas/Course"
         - $ref: "#/components/schemas/RegisteredCourseWithoutID"
     
+    # TODO 時間割クエリ周りは OAS 3.1でenumをkeyとするmapが作れるようになるので簡略化する
+    # https://stackoverflow.com/questions/46552863/how-to-write-openapi-3-swagger-specification-for-property-name-in-map-object/46553255#46553255
+    SearchCourseTimetableQuery:
+      type: object
+      properties:
+        SpringA:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        SpringB:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        SpringC:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        FallA:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        FallB:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        FallC:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        SummerVacation:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+        SpringVacation:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryDays"
+
+    SearchCourseTimetableQueryDays:
+      type: object
+      properties:
+        Sun:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Mon:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Tue:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Wed:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Thu:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Fri:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Sat:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Intensive:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        Appointment:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+        AntTime:
+          $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
+
+    SearchCourseTimetableQueryPeriods:
+      type: object
+      description: 指定しなかった場合はfalseとみなされます
+      properties:
+        0:
+          description: 時限が不明な授業は0になっているためそれらも検索したい場合はtrueに（集中授業に多い）
+          type: boolean
+        1:
+          type: boolean
+        2:
+          type: boolean
+        3:
+          type: boolean
+        4:
+          type: boolean
+        5:
+          type: boolean
+        6:
+          type: boolean
+        7:
+          type: boolean
+        8:
+          type: boolean
+
     RegisteredCourseWithoutID:
       type: object
       required:
