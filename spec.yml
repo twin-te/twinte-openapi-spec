@@ -492,7 +492,226 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
+  
+  /payment:
+    get:
+      summary: 請求一覧を取得
+      tags:
+        - 寄付決済
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  
+  /payment/subscriptions:
+    get:
+      summary: 契約中のサブスクを取得する
+      tags:
+        - 寄付決済
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  
+  /payment/subscriptions/{id}:
+    delete:
+      summary: 指定したサブスクを解除
+      tags:
+        - 寄付決済
+      responses:
+        200:
+          description: 成功
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  /payment/users/me:
+    get:
+      summary: 支払いユーザー取得
+      tags:
+        - 寄付決済
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentUser'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      summary: 支払いユーザー情報更新
+      tags:
+        - 寄付決済
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                displayName:
+                  type: string
+                link:
+                  type: string
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentUser'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  
+  /payment/session/onetime:
+    post:
+      summary: 単発寄付のセッションを作成
+      security: []
+      tags:
+        - 寄付決済
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount
+              properties:
+                amount:
+                  type: integer
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - sessionId
+                properties:
+                  sessionId:
+                    type: string
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+  
+  /payment/session/subscription:
+    post:
+      summary: サブスク寄付のセッションを作成
+      tags:
+        - 寄付決済
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - planId
+              properties:
+                planId:
+                  type: string
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - sessionId
+                properties:
+                  sessionId:
+                    type: string
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
+  /payment/aggregate/totalAmount:
+    get:
+      summary: 寄付総額を取得
+      security: []
+      tags:
+        - 寄付決済
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - total
+                properties:
+                  total:
+                    type: integer
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
+  /payment/aggregate/users:
+    get:
+      summary: 寄付してくれたユーザーで掲載OKのユーザー一覧を取得
+      security: []
+      tags:
+        - 寄付決済
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    displayName:
+                      type: string
+                    link:
+                      type: string
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 tags:
   - name: 学年暦
   - name: 講義
@@ -500,6 +719,7 @@ tags:
   - name: タグ
   - name: ウィジット用
   - name: ユーザー
+  - name: 寄付決済
 
 components:
   schemas:
@@ -815,6 +1035,84 @@ components:
           type: string
           format: uuid
         name:
+          type: string
+
+    Payment:
+      type: object
+      required:
+        - id
+        - type
+        - status
+        - amount
+        - created
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - OneTime
+            - Subscription
+        status:
+          type: string
+          enum:
+            - Succeeded
+            - Canceled
+            - Pending
+        amount:
+          type: integer
+        created:
+          type: string
+          format: date
+
+    Subscription:
+      type: object
+      required:
+        - id
+        - status
+        - plans
+        - created
+      properties:
+        id:
+          type: string
+        status:
+          type: string
+          enum:
+            - Active
+            - Canceled
+        plans:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - name
+              - amount
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              amount:
+                type: integer
+        created:
+          type: string
+          format: date
+    
+    PaymentUser:
+      type: object
+      required:
+        - paymentUserId
+        - twinteUserId
+      properties:
+        paymentUserId:
+          type: string
+        twinteUserId:
+          type: string
+          format: uuid
+        displayName:
+          type: string
+        link:
           type: string
     
     Error:
