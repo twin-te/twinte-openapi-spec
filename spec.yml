@@ -493,7 +493,7 @@ paths:
           $ref: '#/components/responses/InternalServerError'
 
   
-  /payment:
+  /donation/payment:
     get:
       summary: 請求一覧を取得
       tags:
@@ -514,7 +514,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
   
-  /payment/subscriptions:
+  /donation/subscriptions:
     get:
       summary: 契約中のサブスクを取得する
       tags:
@@ -535,7 +535,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
   
-  /payment/subscriptions/{id}:
+  /donation/subscriptions/{id}:
     delete:
       summary: 指定したサブスクを解除
       tags:
@@ -549,7 +549,7 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         500:
           $ref: '#/components/responses/InternalServerError'
-  /payment/users/me:
+  /donation/users/me:
     get:
       summary: 支払いユーザー取得
       tags:
@@ -596,7 +596,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
   
-  /payment/session/onetime:
+  /donation/session/onetime:
     post:
       summary: 単発寄付のセッションを作成
       security: []
@@ -630,7 +630,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
   
-  /payment/session/subscription:
+  /donation/session/subscription:
     post:
       summary: サブスク寄付のセッションを作成
       tags:
@@ -665,7 +665,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
-  /payment/aggregate/totalAmount:
+  /donation/aggregate/totalAmount:
     get:
       summary: 寄付総額を取得
       security: []
@@ -688,7 +688,7 @@ paths:
         500:
           $ref: '#/components/responses/InternalServerError'
 
-  /payment/aggregate/users:
+  /donation/aggregate/users:
     get:
       summary: 寄付してくれたユーザーで掲載OKのユーザー一覧を取得
       security: []
