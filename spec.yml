@@ -540,6 +540,12 @@ paths:
       summary: 指定したサブスクを解除
       tags:
         - 寄付決済
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
       responses:
         200:
           description: 成功
