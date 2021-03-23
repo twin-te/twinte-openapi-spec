@@ -12,6 +12,8 @@ servers:
     description: dev server
   - url: https://app.twinte.net/api/v3
     description: production server
+  - url: https://api.dev.twinte.net/v3
+    description: tmp
 security:
   - cookieAuth: []
 
