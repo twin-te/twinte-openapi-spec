@@ -156,6 +156,44 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /courses/:
+    get:
+      summary: 指定した複数の講義を取得する
+      description: >
+        指定した複数の講義を取得する。
+        指定された講義が一部見つからない場合もエラーなく完了するが、
+        それらは結果には含まれない。
+      tags:
+        - 講義
+      parameters:
+        - name: year
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: codes
+          in: query
+          description: 複数講義をカンマ区切りで指定できる
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Course"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 
   /registered-courses:
     get:
@@ -202,6 +240,17 @@ paths:
                       type: integer
                     code:
                       type: string
+                - type: array
+                  items:
+                    type: object
+                    required:
+                      - year
+                      - code
+                    properties:
+                      year:
+                        type: integer
+                      code:
+                        type: string
                 - type: object
                   required:
                     - year
@@ -238,7 +287,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisteredCourse" 
+                oneOf:
+                  - $ref: "#/components/schemas/RegisteredCourse" 
+                  - type: array
+                    items:
+                      $ref: "#/components/schemas/RegisteredCourse" 
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
