@@ -784,12 +784,39 @@ paths:
           $ref: '#/components/responses/BadRequestError'
         500:
           $ref: '#/components/responses/InternalServerError'
+  /information:
+    get:
+      summary: お知らせを取得
+      security: []
+      tags:
+        - お知らせ
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Information'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
 tags:
   - name: 学年暦
   - name: 講義
   - name: 登録された講義
   - name: タグ
   - name: ウィジット用
+  - name: お知らせ
   - name: ユーザー
   - name: 寄付決済
 
@@ -1187,6 +1214,20 @@ components:
         link:
           type: string
     
+    Information:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+
     Error:
       type: object
       required:
