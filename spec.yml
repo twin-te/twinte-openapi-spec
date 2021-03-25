@@ -342,7 +342,18 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisteredCourseWithoutID"
+              allOf:
+                - type: object
+                  properties:
+                    course:
+                      type: object
+                      required:
+                        - id
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                - $ref: "#/components/schemas/RegisteredCourseWithoutID"
       responses:
         200:
           description: 成功
