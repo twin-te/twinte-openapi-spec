@@ -1268,4 +1268,4 @@ components:
     cookieAuth:
       type: apiKey
       in: cookie
-      name: connect.sid
+      name: twinte_session
