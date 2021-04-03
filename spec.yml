@@ -951,6 +951,8 @@ components:
         - recommendedGrades
         - methods
         - schedules
+        - isAnnual
+        - hasParseError
       properties:
         id:
           type: string
@@ -981,6 +983,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CourseSchedule"
+        isAnnual:
+          type: boolean
+        hasParseError:
+          type: boolean
     
     RegisteredCourse:
       allOf:
