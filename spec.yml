@@ -864,13 +864,13 @@ components:
         module:
           $ref: "#/components/schemas/CourseModule"
         day:
-          $ref: "#/components/schemas/Day"
+          $ref: "#/components/schemas/CourseDay"
         period:
           type: integer
         room:
           type: string
 
-    Day:
+    CourseDay:
       type: string
       enum:
         - Sun
@@ -906,7 +906,7 @@ components:
         description:
           type: string
         changeTo:
-          $ref: "#/components/schemas/Day"
+          $ref: "#/components/schemas/CourseDay"
 
     SchoolCalendarModule:
       type: object
