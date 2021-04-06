@@ -850,7 +850,6 @@ components:
         - FallB
         - FallC
         - SpringVacation
-        - Annual
         - Unknown
 
     CourseSchedule:
