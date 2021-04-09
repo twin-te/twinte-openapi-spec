@@ -818,7 +818,21 @@ paths:
           $ref: '#/components/responses/BadRequestError'
         500:
           $ref: '#/components/responses/InternalServerError'
-
+  /information/{id}:
+    put:
+      summary: お知らせの既読
+      tags:
+        - お知らせ
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: 成功
 tags:
   - name: 学年暦
   - name: 講義
@@ -1230,6 +1244,11 @@ components:
     
     Information:
       type: object
+      required:
+        - id
+        - title
+        - content
+        - publishedAt
       properties:
         id:
           type: string
@@ -1241,6 +1260,8 @@ components:
         publishedAt:
           type: string
           format: date-time
+        read:
+          type: boolean
 
     Error:
       type: object
