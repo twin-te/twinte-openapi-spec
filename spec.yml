@@ -791,6 +791,8 @@ paths:
                       type: string
         400:
           $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
         500:
           $ref: '#/components/responses/InternalServerError'
   /information:
@@ -801,6 +803,11 @@ paths:
         - お知らせ
       parameters:
         - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: offset
           in: query
           required: true
           schema:
@@ -830,9 +837,24 @@ paths:
           schema:
             type: string
             format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - read
+              properties:
+                read:
+                  type: boolean
       responses:
         200:
           description: 成功
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
 tags:
   - name: 学年暦
   - name: 講義
