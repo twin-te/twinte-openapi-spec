@@ -547,9 +547,13 @@ paths:
               schema:
                 type: object
                 required:
+                  - date
                   - events
                   - courses
                 properties:
+                  date:
+                    type: string
+                    format: date
                   module: 
                     $ref: '#/components/schemas/SchoolCalendarModule'
                   events:
