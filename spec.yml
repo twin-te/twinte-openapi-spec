@@ -1087,7 +1087,7 @@ components:
           $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
         Appointment:
           $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
-        AntTime:
+        AnyTime:
           $ref: "#/components/schemas/SearchCourseTimetableQueryPeriods"
 
     SearchCourseTimetableQueryPeriods:
