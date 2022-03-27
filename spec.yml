@@ -423,6 +423,7 @@ paths:
 
     post:
       summary: タグを作成する
+      description: 新しいタグは末尾に追加されます
       tags:
         - タグ
       requestBody:
@@ -442,6 +443,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Tag"
+        400:
+          $ref: '#/components/responses/BadRequestError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+    patch:
+      summary: タグを並べ替える
+      description: |-
+        positionを変更するタグのidとpositionの配列を送信してください。
+        positionが重複している場合はエラーになります。
+      tags:
+      - タグ
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/TagPositionOnly'
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagPositionOnly'
         400:
           $ref: '#/components/responses/BadRequestError'
         401:
@@ -1168,6 +1198,22 @@ components:
           format: uuid
         name:
           type: string
+        position:
+          type: integer
+          minimum: 0
+
+    TagPositionOnly:
+      type: object
+      required:
+        - id
+        - position
+      properties:
+        id:
+          type: string
+          format: uuid
+        position:
+          type: integer
+          minimum: 0
 
     TagIdOnly:
       type: object
