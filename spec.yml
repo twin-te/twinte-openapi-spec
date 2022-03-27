@@ -1200,6 +1200,7 @@ components:
           type: string
         position:
           type: integer
+          minimum: 0
 
     TagPositionOnly:
       type: object
@@ -1212,6 +1213,7 @@ components:
           format: uuid
         position:
           type: integer
+          minimum: 0
 
     TagIdOnly:
       type: object
