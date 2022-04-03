@@ -105,6 +105,10 @@ paths:
                   type: array
                   items:
                     type: string
+                codes:
+                  type: array
+                  items:
+                    type: string
                 limit:
                   type: integer
                   minimum: 1
