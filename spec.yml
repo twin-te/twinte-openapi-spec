@@ -560,6 +560,18 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         500:
           $ref: '#/components/responses/InternalServerError'
+    delete:
+      summary: ログイン中のユーザーを退会する
+      tags:
+        - ユーザー
+      responses:
+        204:
+          description: 成功
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        500:
+          $ref: '#/components/responses/InternalServerError'
+
 
   /timetable/{date}:
     get:
